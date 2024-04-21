@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-let initialState = {user:null}
+let initialState = {user:{}, isAuth:false}
 
 const storedAuthState = localStorage.getItem('authState');
 initialState = storedAuthState ? JSON.parse(storedAuthState) : initialState;
@@ -15,11 +15,13 @@ const userSlice = createSlice({
                 email: data.email,
             }
             state.user = userData;
-            localStorage.setItem('authState', JSON.stringify(userData));
+            state.isAuth = true;
+            localStorage.setItem('authState', JSON.stringify({user:userData,isAuth:true}));
         },
         logout(state){ 
-            state.user = null;
-            localStorage.setItem('authState', JSON.stringify(null));
+            state.user = {};
+            state.isAuth = false;
+            localStorage.removeItem('authState');
         },
         setUserState(state,action){
             const data = action.payload
@@ -28,6 +30,7 @@ const userSlice = createSlice({
                 email: data.user.email,
             }
             state.user = userData;
+
         }
     }
 })

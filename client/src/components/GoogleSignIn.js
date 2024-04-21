@@ -3,6 +3,7 @@ import {signInWithGoogle} from "../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user-slice";
 import { useSelector } from 'react-redux';
+import GoogleButton from 'react-google-button'
 function GoogleSignIn() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user)
@@ -13,8 +14,8 @@ function GoogleSignIn() {
             id: result.user.uid,
             email: result.user.email
           };
-          console.log(userLogin);
           dispatch(userActions.login(userLogin));
+          console.log(user);
         }catch(e){
             console.log(e)
         }
@@ -26,8 +27,8 @@ function GoogleSignIn() {
   return (
     <div>
       <div>
-      <button onClick={handleGoogleSignIn}/>
-      <button onClick={showState}/>
+      <GoogleButton onClick={handleGoogleSignIn}/>
+      <button onClick={showState}> Show my user info</button>
       </div>
     </div>
   );

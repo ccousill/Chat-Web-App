@@ -9,7 +9,7 @@ function ChatPage() {
           console.log(user);
         };
     const handleSendMessage = () => {
-      sendMessage('Hello from client');
+      sendMessage(JSON.stringify({ message: 'Hello from client' }));
     };
 
   return (

@@ -6,12 +6,12 @@ from django.contrib.auth import authenticate, login
 import json
 import requests
 from datetime import datetime, timedelta
-from .models import User
+from .models import User, Chatroom, ChatMessage
 from django.core.exceptions import ObjectDoesNotExist
 
 
 @api_view(['POST'])
-def login(request):
+def Login(request):
     # try:
 
         print("post")
@@ -39,3 +39,20 @@ def login(request):
     #         return JsonResponse({'error':'Invalid credentials'}, status=401)
     # except Exception as e:
     #     return JsonResponse({'error':str(e)},status=500)
+
+@api_view(['POST'])
+def CreateRoom(request):
+     data = json.loads(request.body)
+     room_name = data.get('roomName')
+     user = data.get('user')
+     email = user['user']['email']
+     user = User.objects.get(email=email)
+
+     chatroom = Chatroom.objects.create(name=room_name,created_by=user)
+     return JsonResponse({'room_name': chatroom.name, 'created_by': chatroom.created_by.email})
+
+@api_view(['GET'])
+def list_rooms(request):
+     rooms = Chatroom.objects.all()
+     room_data = [{'name':room.name,'created_by':room.created_by.email} for room in rooms]
+     return JsonResponse(room_data, safe=False)

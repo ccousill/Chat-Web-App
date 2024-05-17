@@ -1,11 +1,13 @@
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import ChatPage from "./pages/ChatPage";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import ChatsPage from "./pages/ChatsPage";
 import { action as logoutAction } from "./pages/Logout";
 import { RequireAuth } from "./util/auth";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "./firebase/firebase";
+import ChatRoomPage from "./pages/ChatRoomPage";
+import Navbar from "./UI/Navbar";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -14,8 +16,12 @@ const router = createBrowserRouter([
       { index: true, element: <LoginPage /> },
       {
         path: "chats",
-        element: <RequireAuth component={<ChatPage />} />,
-        children: [{ path: "logout", action: logoutAction }],
+        element: <RequireAuth component={ <div> <Navbar/><Outlet /> </div> } />,
+        children: [
+          { index:true, element: <ChatsPage/>},
+          { path: ":roomName", element: <ChatRoomPage/>},
+          { path: "logout", action: logoutAction },
+        ],
       },
     ],
   },

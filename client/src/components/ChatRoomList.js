@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AllChatRooms } from "../services/chats";
+import { Link } from "react-router-dom";
 function ChatRoomList() {
   const [chatRooms, setChatRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +24,7 @@ function ChatRoomList() {
     {isLoading ? (<p>Loading...</p>) :
     (<ul>
         {chatRooms.map((room, index) => (
-          <li key={index}>{room.name}</li>
+          <li key={index}><Link to={`${room.name}`}>{room.name}</Link></li>
         ))}
       </ul>)}
 

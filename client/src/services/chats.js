@@ -31,3 +31,12 @@ export const SendMessage = async (messageData) => {
         console.log('Error:',e)
     }
 }
+
+export const FetchMessages = async (room_name) => {
+    try{
+        return await axios.get(`http://127.0.0.1:8000/chats/getroommessages/${room_name}/`);
+    }catch(e){
+        console.log('Error:',e)
+    }
+}
+

@@ -1,7 +1,7 @@
 import React , {useState} from 'react'
 import { CreateRoom } from "../services/chats";
 import { useSelector } from "react-redux";
-function CreateRoomForm() {
+function CreateRoomForm({props}) {
     const [roomName, setRoomName] = useState("");
     const user = useSelector((state) => state.user);
     const handleCreateRoom = async (e) =>{
@@ -9,7 +9,7 @@ function CreateRoomForm() {
         try{
             let response = await CreateRoom({user:user,roomName:roomName});
             console.log(response);
-
+            props(response.data);
             setRoomName("");
         }catch(e){
             console.log(e);

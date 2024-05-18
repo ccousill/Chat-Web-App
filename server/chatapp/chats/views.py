@@ -56,3 +56,23 @@ def list_rooms(request):
      rooms = Chatroom.objects.all()
      room_data = [{'name':room.name,'created_by':room.created_by.email} for room in rooms]
      return JsonResponse(room_data, safe=False)
+
+@api_view(['POST'])
+def send_message(request):
+     print("sending")
+     data= request.data
+     email = data.get('email')
+     content = data.get('content')
+     chatroom_name = data.get('roomName')
+     print(email)
+     print(content)
+     print(chatroom_name)
+     if email and content:
+          user = User.objects.get(email=email)
+          chatroom = Chatroom.objects.get(name=chatroom_name)
+          message = ChatMessage.objects.create(user=user,content=content)
+          chatroom.messages.add(message)
+          chatroom.save()
+          return Response({'message': 'Message sent successfully'}, status=201)
+     else:
+        return Response({'error': 'Missing required data'}, status=400)

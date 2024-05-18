@@ -23,3 +23,11 @@ export const AllChatRooms = async () => {
         console.log('Error:',e)
     }
 }
+
+export const SendMessage = async (messageData) => {
+    try{
+        return await axios.post('http://127.0.0.1:8000/chats/sendmessage/',messageData);
+    }catch(e){
+        console.log('Error:',e)
+    }
+}

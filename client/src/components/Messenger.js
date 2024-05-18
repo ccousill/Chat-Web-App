@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { SendMessage } from "../services/chats";
+import { useSelector } from "react-redux";
 function Messenger({props}) {
-    
+  const user = useSelector((state) => state.user);
   const roomName = props.split(" ").join("")
-  console.log(roomName);
   const [chatMessage, setChatMessage] = useState("");
   const [chatLog, setChatLog] = useState([]);
   const { sendMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:8000/ws/chat/" + roomName+ "/"
   );
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     sendMessage(JSON.stringify({ message: chatMessage }));
+
+    try{
+        const data = {
+            content:chatMessage,
+            email: user.user.email,
+            roomName:props
+        }
+        const response = await SendMessage(data);
+        console.log(response)
+    }catch(e){
+        console.log(e);
+    }
     setChatMessage("");
   };
 

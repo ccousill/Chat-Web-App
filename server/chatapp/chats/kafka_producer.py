@@ -14,7 +14,7 @@ producer_config = {
 producer = Producer(producer_config)
 
 # Publish message to Kafka topic
-def send_message(room_name, user, content, timestamp):
+def send_message_to_kafka(room_name, user, content, timestamp):
     message = {
         'room_name':room_name,
         'user': user,

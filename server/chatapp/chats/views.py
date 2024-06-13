@@ -8,7 +8,7 @@ import requests
 from datetime import datetime, timedelta
 from .models import User, Chatroom, ChatMessage
 from django.core.exceptions import ObjectDoesNotExist
-
+from .kafka_producer import send_message_to_kafka
 
 @api_view(['POST'])
 def Login(request):
@@ -68,6 +68,7 @@ def send_message(request):
                 'content': message.content,
                 'timestamp': message.timestamp
           }
+          send_message_to_kafka(chatroom_name,user.username, content, message.timestamp.isoformat())
           return JsonResponse({'messageData':messageData},safe=False)
      else:
         return Response({'error': 'Missing required data'}, status=400)

@@ -42,7 +42,6 @@ def CreateRoom(request):
      user = data.get('user')
      email = user['user']['email']
      user = User.objects.get(email=email)
-
      chatroom = Chatroom.objects.create(name=room_name,created_by=user)
      return JsonResponse({'room_name': chatroom.name, 'created_by': chatroom.created_by.email})
 
@@ -64,7 +63,6 @@ def send_message(request):
           message = ChatMessage.objects.create(user=user,content=content)
           chatroom.messages.add(message)
           chatroom.save()
-
           messageData = {
                'user': user.id,
                 'content': message.content,
@@ -77,10 +75,8 @@ def send_message(request):
 @api_view(['GET'])
 def get_room_messages(request,room_name):
     try:
-        print(room_name)
         chatroom = Chatroom.objects.get(name=room_name)
         messages = chatroom.messages.all().values('user','content','timestamp')
-        print(messages)
         message_list = list(messages)
         return JsonResponse(message_list,safe=False)
     except Chatroom.ObjectDoesNotExist:

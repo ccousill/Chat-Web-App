@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
+KAFKA_BOOTSTRAP_SERVERS = config('KAFKA_BOOTSTRAP_SERVERS')
+KAFKA_API_KEY = config('KAFKA_API_KEY')
+KAFKA_API_SECRET = config('KAFKA_API_SECRET')
+KAFKA_TOPIC = config('KAFKA_TOPIC')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

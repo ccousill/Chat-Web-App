@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { SendMessage } from "../services/chats";
 import { useSelector } from "react-redux";
 function Messenger({props,updateMessages}) {
   const user = useSelector((state) => state.user);
@@ -17,9 +16,7 @@ function Messenger({props,updateMessages}) {
             email: user.user.email,
             roomName:props
         }
-        const response = await SendMessage(data);
-        sendMessage(JSON.stringify({ content: chatMessage, user: response.data.messageData.user, timestamp: response.data.messageData.timestamp }));
-        console.log(response.data)
+        sendMessage(JSON.stringify(data));
     }catch(e){
         console.log(e);
     }

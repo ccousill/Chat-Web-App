@@ -51,27 +51,27 @@ def list_rooms(request):
      room_data = [{'name':room.name,'created_by':room.created_by.email} for room in rooms]
      return JsonResponse(room_data, safe=False)
 
-@api_view(['POST'])
-def send_message(request):
-     data= request.data
-     email = data.get('email')
-     content = data.get('content')
-     chatroom_name = data.get('roomName')
-     if email and content:
-          user = User.objects.get(email=email)
-          chatroom = Chatroom.objects.get(name=chatroom_name)
-          message = ChatMessage.objects.create(user=user,content=content)
-          chatroom.messages.add(message)
-          chatroom.save()
-          messageData = {
-               'user': user.id,
-                'content': message.content,
-                'timestamp': message.timestamp
-          }
-          send_message_to_kafka(chatroom_name,user.username, content, message.timestamp.isoformat())
-          return JsonResponse({'messageData':messageData},safe=False)
-     else:
-        return Response({'error': 'Missing required data'}, status=400)
+# @api_view(['POST'])
+# def send_message(request):
+#      data= request.data
+#      email = data.get('email')
+#      content = data.get('content')
+#      chatroom_name = data.get('roomName')
+#      if email and content:
+#           user = User.objects.get(email=email)
+#           chatroom = Chatroom.objects.get(name=chatroom_name)
+#           message = ChatMessage.objects.create(user=user,content=content)
+#           chatroom.messages.add(message)
+#           chatroom.save()
+#           messageData = {
+#                'user': user.id,
+#                 'content': message.content,
+#                 'timestamp': message.timestamp
+#           }
+#           send_message_to_kafka(chatroom_name,user.username, content, message.timestamp.isoformat())
+#           return JsonResponse({'messageData':messageData},safe=False)
+#      else:
+#         return Response({'error': 'Missing required data'}, status=400)
      
 @api_view(['GET'])
 def get_room_messages(request,room_name):
